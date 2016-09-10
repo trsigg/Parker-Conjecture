@@ -1,9 +1,9 @@
 class Language:
-    """General base class for finding lengths of """
-    base = 10
-    period_digits = 3  # number of digits in a numerical "period" (3 in English)
-    digit_lengths = []  # length of digit names in language
-    period_lengths = []  # length of period names (hundred, million, billion, etc.)
+    """General base class for finding lengths of written forms of numbers in various languages"""
+    base = 10  # numerical base used in language
+    period_digits = 3  # number of digits in a numerical "period" (e.g. 3 in English)
+    digit_names = []
+    suffixes = []
 
     @classmethod
     def get_digits(cls, number):
@@ -18,15 +18,30 @@ class Language:
         return digits
 
     @classmethod
-    def num_letters(cls, number):
+    def num_period_letters(cls, number):
+        """Returns the number of letters in the written form of a single period (without suffix)"""
         letters = 0
         digits = cls.get_digits(number)
 
         for digit in digits:
             if digit > 0:
-                letters += cls.digit_lengths[digit] + cls.power_lengths[digit]
+                letters += len(cls.digit_names[digit]) + len(cls.suffixes[digit])
 
         return letters
+
+    @classmethod
+    def num_letters(cls, number):
+        """Returns the number of letters in the written form of a number"""
+        num_letters = 0
+        period_index = cls.period_digits
+
+        while number > 0:
+            period = number % cls.base ** cls.period_digits
+            num_letters += cls.num_period_letters(period) + len(cls.suffixes[period_index])
+            number -= period
+            period_index += 1
+
+        return num_letters
 
     @classmethod
     def find_cycle(cls, number):
