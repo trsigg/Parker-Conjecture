@@ -21,7 +21,7 @@ class Language(object):
         return digits
 
     @classmethod
-    def num_period_letters(cls, number):
+    def num_period_letters(cls, number, period_index):
         """Returns the number of letters in the written form of a single period (without suffix)"""
         digits = cls.get_digits(number)
         num_letters = 0
@@ -29,6 +29,8 @@ class Language(object):
         for digit in digits:
             if digit > 0:
                 num_letters += len(cls.digit_names[digit])
+
+        num_letters += len(cls.suffixes[period_index])
 
         return num_letters
 
@@ -40,7 +42,7 @@ class Language(object):
 
         while number > 0:
             period = number % cls.base ** cls.period_digits
-            num_letters += cls.num_period_letters(period) + len(cls.suffixes[period_index])
+            num_letters += cls.num_period_letters(period, period_index)
             number = (number - period) / (cls.base ** cls.period_digits)
             period_index += 1
 

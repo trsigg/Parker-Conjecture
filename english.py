@@ -5,7 +5,8 @@ class English(Language):
     digit_names = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
     suffixes = ['', 'thousand', 'million', 'billion', 'trillion']
     tens = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
-    teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
+    teens = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen',
+             'nineteen']
 
     @classmethod
     def num_period_letters(cls, number):
@@ -23,5 +24,7 @@ class English(Language):
                     num_letters += len(cls.tens[digits[1] - 2] + cls.digit_names[digits[0]])
             else:
                 num_letters = len(cls.digit_names[digits[0]])
+
+        num_letters += len(cls.suffixes[period_index])
 
         return num_letters
