@@ -55,8 +55,15 @@ class Language(object):
         return cycle
 
     @classmethod
-    def find_lengths_of_cycles_up_to(cls, bound):
+    def find_cycle_lengths_in_range(cls, bound, upper=None):
         cycle_lengths = []
 
-        for i in xrange(bound):
+        if upper is None:
+            to_check = range(bound)
+        else:
+            to_check = range(bound, upper)
+
+        for i in to_check:
             cycle_lengths.append(len(cls.find_cycle(i)))
+
+        return cycle_lengths

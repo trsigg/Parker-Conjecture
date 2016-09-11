@@ -4,7 +4,7 @@ from language import Language
 class English(Language):
     digit_names = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
     suffixes = ['', 'thousand', 'million', 'billion', 'trillion']
-    tens = ['', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+    tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
     teens = ['eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
 
     @classmethod
@@ -15,9 +15,13 @@ class English(Language):
         if len(digits) == 3:
             num_letters += len(cls.digit_names[digits[2]] + 'hundred')
 
-        if 10 < number < 20:
-            num_letters += cls.teens[digits[0] - 1]
+        if 10 < number % cls.base ** cls.period_digits < 20:
+            num_letters += len(cls.teens[digits[0] - 1])
         else:
-            num_letters += len(cls.tens[digits[1]] + cls.digit_names[digits[0]])
+            if len(digits) > 0:
+                num_letters += len(cls.digit_names[digits[0]])
+
+                if len(digits) > 1:
+                    num_letters += len(cls.tens[digits[1]])
 
         return num_letters
