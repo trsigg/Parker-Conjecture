@@ -1,9 +1,9 @@
-class Language:
+class Language(object):
     """General base class for finding lengths of written forms of numbers in various languages"""
     base = 10  # numerical base used in language
-    period_digits = 3  # number of digits in a numerical "period" (e.g. 3 in English)
+    period_digits = 3  # number of digits in a numerical "period"
     digit_names = []
-    suffixes = []
+    suffixes = []  # period suffixes (thousand, million, billion, etc.)
 
     @classmethod
     def get_digits(cls, number):
@@ -20,25 +20,25 @@ class Language:
     @classmethod
     def num_period_letters(cls, number):
         """Returns the number of letters in the written form of a single period (without suffix)"""
-        letters = 0
         digits = cls.get_digits(number)
+        num_letters = 0
 
         for digit in digits:
             if digit > 0:
-                letters += len(cls.digit_names[digit]) + len(cls.suffixes[digit])
+                num_letters += len(cls.digit_names[digit])
 
-        return letters
+        return num_letters
 
     @classmethod
     def num_letters(cls, number):
         """Returns the number of letters in the written form of a number"""
         num_letters = 0
-        period_index = cls.period_digits
+        period_index = 0
 
         while number > 0:
             period = number % cls.base ** cls.period_digits
             num_letters += cls.num_period_letters(period) + len(cls.suffixes[period_index])
-            number -= period
+            number = (number - period) / (cls.base ** cls.period_digits)
             period_index += 1
 
         return num_letters
