@@ -1,3 +1,6 @@
+import matplotlib.pyplot as plt
+
+
 class Language(object):
     """General base class for finding lengths of written forms of numbers in various languages"""
     base = 10  # numerical base used in language
@@ -90,3 +93,18 @@ class Language(object):
                 cycles = [number]
 
         return max_length, cycles
+
+    @classmethod
+    def plot_cycle_lengths_in_range(cls, bound, upper=None, histogram=False):
+        cycle_lengths = cls.find_cycle_lengths_in_range(bound, upper)
+        if histogram:
+            plt.hist(cycle_lengths)
+        else:
+            if upper is None:
+                x_vals = range(bound)
+            else:
+                x_vals = range(bound, upper)
+
+            plt.plot(x_vals, cycle_lengths)
+
+        plt.show()
