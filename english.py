@@ -9,7 +9,7 @@ class English(Language):
              'nineteen']
 
     @classmethod
-    def num_period_letters(cls, number):
+    def num_period_letters(cls, number, period_index):
         num_letters = 0
         digits = cls.get_digits(number)
 
