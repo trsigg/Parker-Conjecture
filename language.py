@@ -56,14 +56,37 @@ class Language(object):
 
     @classmethod
     def find_cycle_lengths_in_range(cls, bound, upper=None):
+        """Returns a list of all cycle lengths for numbers in specified range"""
         cycle_lengths = []
 
         if upper is None:
-            to_check = range(bound)
+            to_check = xrange(bound)
         else:
-            to_check = range(bound, upper)
+            to_check = xrange(bound, upper)
 
-        for i in to_check:
-            cycle_lengths.append(len(cls.find_cycle(i)))
+        for number in to_check:
+            cycle_lengths.append(len(cls.find_cycle(number)))
 
         return cycle_lengths
+
+    @classmethod
+    def find_max_cycles_in_range(cls, bound, upper=None):
+        """Returns maximum length cycle length from numbers in specified range and list of numbers which yield it"""
+        max_length = 0
+        cycles = []
+
+        if upper is None:
+            to_check = xrange(bound)
+        else:
+            to_check = xrange(bound, upper)
+
+        for number in to_check:
+            length = len(cls.find_cycle(number))
+
+            if length == max_length:
+                cycles.append(number)
+            elif length > max_length:
+                max_length = length
+                cycles = [number]
+
+        return max_length, cycles
